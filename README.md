@@ -1,4 +1,5 @@
 # Flask Lab Project (2-Member Adaptation)
+# Triggering CI run
 
 This repository contains a minimal Flask app with CI/CD via GitHub Actions and a Dockerfile.
 
