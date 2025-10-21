@@ -1,17 +1,108 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" />
   </head>
   <body>
-    <main>
-      <h1>{{ title }}</h1>
-      <p>Home route is working 🎉</p>
-      <p>Health check: <code>/health</code> → returns <strong>OK</strong></p>
-      <p>POST some JSON to <code>/data</code> to see it echoed back.</p>
+    <header class="site-header">
+      <div class="container">
+        <h1>⚗️ {{ title }}</h1>
+        <nav>
+          <a href="{{ url_for('home') }}">Home</a>
+          <a href="{{ url_for('about') }}" target="_blank" rel="noopener">About (JSON)</a>
+          <a href="{{ url_for('health') }}" target="_blank" rel="noopener">Health</a>
+          <a href="https://httpstatus.io/201" target="_blank" rel="noopener">What’s 201?</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h2>Welcome 👋</h2>
+        <p>
+          This is a tiny, clean Flask starter. Use the panel below to send data to
+          <code>/data</code> and see the JSON echo with metadata.
+        </p>
+        <p class="muted">Tip: leave JSON blank and try the form tab.</p>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+          <h3>Send JSON</h3>
+          <textarea id="jsonInput" rows="10" placeholder='{"name":"Fatima","role":"Student"}'></textarea>
+          <button id="sendJsonBtn">POST JSON → /data</button>
+        </div>
+
+        <div class="card">
+          <h3>Send Form Data</h3>
+          <form id="formInput">
+            <label>
+              Name
+              <input name="name" type="text" placeholder="Your name" />
+            </label>
+            <label>
+              Role
+              <input name="role" type="text" placeholder="Student / Dev / Tester" />
+            </label>
+            <button type="submit">POST Form → /data</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Response Console</h3>
+        <pre id="console" class="console">// Responses will appear here…</pre>
+      </section>
+
+      <footer class="site-footer">
+        <p>© {{ year }} · Flask Lab Project</p>
+      </footer>
     </main>
+
+    <script>
+      const $ = (q) => document.querySelector(q);
+      const consoleEl = $("#console");
+
+      function show(obj) {
+        consoleEl.textContent = JSON.stringify(obj, null, 2);
+      }
+
+      $("#sendJsonBtn").addEventListener("click", async () => {
+        let body = {};
+        try {
+          const raw = $("#jsonInput").value.trim();
+          body = raw ? JSON.parse(raw) : {};
+        } catch (e) {
+          show({ error: "Invalid JSON. Please fix it before sending." });
+          return;
+        }
+        try {
+          const res = await fetch("/data", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          });
+          show(await res.json());
+        } catch (e) {
+          show({ error: String(e) });
+        }
+      });
+
+      $("#formInput").addEventListener("submit", async (ev) => {
+        ev.preventDefault();
+        const form = ev.currentTarget;
+        const data = new FormData(form);
+        try {
+          const res = await fetch("/data", { method: "POST", body: data });
+          show(await res.json());
+        } catch (e) {
+          show({ error: String(e) });
+        }
+      });
+    </script>
   </body>
 </html>

@@ -1,4 +1,99 @@
-body{font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin:0; padding:2rem; background:#0b0f14; color:#e7edf3;}
-main{max-width:720px; margin:auto;}
-h1{font-size:2rem; margin-bottom:.5rem;}
-code{background:#121821; padding:.15rem .35rem; border-radius:.35rem;}
+:root {
+  --bg: #0b0f14;
+  --card: #0f1620;
+  --text: #e7edf3;
+  --muted: #9fb2c6;
+  --accent: #7cc3ff;
+  --border: #1b2636;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.container {
+  width: min(100%, 980px);
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+.site-header {
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+  position: sticky; top: 0; backdrop-filter: blur(6px);
+}
+
+.site-header h1 { margin: 0; font-size: 1.35rem; }
+.site-header nav { margin-top: .5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+.site-header a { color: var(--accent); text-decoration: none; }
+.site-header a:hover { text-decoration: underline; }
+
+.site-footer {
+  margin-top: 2rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  margin: 1rem 0;
+}
+
+.muted { color: var(--muted); }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 800px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+
+textarea, input {
+  width: 100%;
+  background: #0a1018;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .75rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+label { display: grid; gap: .35rem; margin-bottom: .75rem; }
+
+button {
+  display: inline-block;
+  padding: .7rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, #1b2636, #121a26);
+  color: var(--text);
+  cursor: pointer;
+}
+button:hover { filter: brightness(1.1); }
+
+.console {
+  background: #0a1018;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .75rem;
+  overflow: auto;
+  max-height: 360px;
+}
+code {
+  background: #121821;
+  padding: .15rem .35rem;
+  border-radius: .35rem;
+}
